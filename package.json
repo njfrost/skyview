@@ -1,0 +1,21 @@
+{
+  "name": "skyview",
+  "version": "1.0.0",
+  "description": "Command line interface and node package to download satellite imagery",
+  "scripts": { },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/njfrost/skyview.git"
+  },
+  "keywords": [
+    "NASA",
+    "images",
+    "DSCOVR",
+  ],
+  "author": "Nathan Frost and Diana Holland",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/njfrost/skyview/issues"
+  },
+  "homepage": "https://github.com/njfrost/skyview#readme"
+}
