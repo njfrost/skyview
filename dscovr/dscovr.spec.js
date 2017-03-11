@@ -15,7 +15,7 @@ describe('dscovr', function() {
     describe('Calls /api/fetch', function() {
         nock(dscovr.baseApi).get('/natural').reply(200, dscovrMocks.natural)
         it('Returns JSON', function() {
-            return dscovr.getImage({ format: 'json', color: 'natural' })
+            return dscovr.getJson()
                 .then(function(json) {
                     assert.deepEqual(json, dscovrMocks.natural)
                 })
