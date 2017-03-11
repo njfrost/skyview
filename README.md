@@ -22,3 +22,11 @@ __Node Version 6.9.1__
 
 This is being developed with 6.9.1 but we think it could be built with earlier
 versions. Let us know!
+
+# Tests
+
+__[Mocha](https://mochajs.org/)__
+
+    npm test
+    
+Test files live next to their implementations with a .spec.js suffix.
