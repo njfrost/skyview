@@ -1,6 +1,6 @@
 # skyview
 We would like to build command line interfaces and node packages for downloading 
-satellite imagery. We will start with the EPIC DSCOVR API and eventually add a
+satellite imagery. We will start with the [EPIC DSCOVR API](https://epic.gsfc.nasa.gov/about/api) and eventually add a
 GOES-16 interface when it's API becomes available.
 
 __Comand line Example:__
