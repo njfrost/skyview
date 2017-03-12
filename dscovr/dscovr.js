@@ -28,11 +28,10 @@ function getImage() {
                 const writestream = fs.createWriteStream(filePath)
                 console.log(chalk.green(`Saved file to ${filePath}`))
 
-                res.body.pipe(writestream)
+                const stream = res.body.pipe(writestream)
                 return new Promise(function (resolve, reject) {
-                    res.body.on('end', resolve)
-
-                    res.body.on('error', reject)
+                    stream.on('close', resolve)
+                    stream.on('error', reject)
                 })
 
 
