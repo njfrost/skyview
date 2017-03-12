@@ -19,6 +19,7 @@ function getImage() {
         var image = json[0].image
         const formattedDate = date.slice(0,10).replace(new RegExp('-', 'g'), '/')
         const imageUrl = `${baseArchive}/natural/${formattedDate}/png/${image}.png`
+        console.log(`downloading ${imageUrl}`)
         return fetch(imageUrl)
             .then(function(res) {
                 const currentPath = process.cwd()
