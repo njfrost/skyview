@@ -1,3 +1,5 @@
+const chalk = require('chalk')
+const figlet = require('figlet')
 const fetch = require('node-fetch')
 const dscovrMocks = require('../mocks/dscovr.mock.js')
 
@@ -14,10 +16,12 @@ function getImage() {
     return getJson().then(function(json) {
         var date = json[0].date
         var image = json[0].image
-        const dateUrl = date.slice(0,10).replace(new RegExp('-', 'g'), '/')
-        return fetch(`${baseArchive}/natural/${dateUrl}/png/${image}.png`, function(res) {
-            return res.json()
-        })
+        const formattedDate = date.slice(0,10).replace(new RegExp('-', 'g'), '/')
+        return fetch(`${baseArchive}/natural/${formattedDate}/png/${image}.png`)
+            .then(function(res) {
+                console.log(chalk.yellow(figlet.textSync('Planets!', { horizontalLayout: 'full' })))
+                return res.json()
+            })
     })
 }
 
