@@ -26,9 +26,16 @@ function getImage() {
                 console.log(chalk.yellow(figlet.textSync('Earth!', { horizontalLayout: 'full' })))
                 console.log(chalk.green(`Downloading ${imageUrl} ....`))
                 const writestream = fs.createWriteStream(filePath)
-                res.body.pipe(writestream)
                 console.log(chalk.green(`Saved file to ${filePath}`))
-                return filePath
+
+                res.body.pipe(writestream)
+                return new Promise(function (resolve, reject) {
+                    res.body.on('end', resolve)
+
+                    res.body.on('error', reject)
+                })
+
+
             })
     })
 }
