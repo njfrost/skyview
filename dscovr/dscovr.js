@@ -22,12 +22,13 @@ function getImage() {
         console.log(`downloading ${imageUrl}`)
         return fetch(imageUrl)
             .then(function(res) {
-                const currentPath = process.cwd()
+                const filePath = `${process.cwd()}/${image}.png`
                 console.log(chalk.yellow(figlet.textSync('Earth!', { horizontalLayout: 'full' })))
-                console.log(chalk.green(`downloading image to ${currentPath}...`))
-                const outputPath = fs.createWriteStream(`${currentPath}/${image}.png`)
-                res.body.pipe(outputPath)
-                return outputPath
+                console.log(chalk.green(`Downloading ${imageUrl} ....`))
+                const writestream = fs.createWriteStream(filePath)
+                res.body.pipe(writestream)
+                console.log(chalk.green(`Saved file to ${filePath}`))
+                return filePath
             })
     })
 }
