@@ -1,7 +1,6 @@
 const chalk = require('chalk')
 const figlet = require('figlet')
 const fetch = require('node-fetch')
-const dscovrMocks = require('../mocks/dscovr.mock.js')
 const fs = require('fs')
 
 const baseApi = 'https://epic.gsfc.nasa.gov/api'
@@ -29,7 +28,7 @@ function getImage() {
         return fetch(imageUrl)
             .then(function(res) {
                 const filePath = `${process.cwd()}/${image}.png`
-                console.log(chalk.yellow(figlet.textSync('Earth!', { horizontalLayout: 'full' })))
+                console.log(chalk.blue(figlet.textSync('Earth!', { horizontalLayout: 'full' })))
                 console.log(chalk.green(`Downloading ${imageUrl} ....`))
                 const writestream = fs.createWriteStream(filePath)
                 console.log(chalk.green(`Saved file to ${filePath}`))

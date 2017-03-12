@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Command line interface and node package to download satellite imagery",
   "scripts": {
-    "test": "mocha dscovr/*.spec.js"
+    "test": "mocha js/dscovr/*.spec.js"
   },
   "repository": {
     "type": "git",
