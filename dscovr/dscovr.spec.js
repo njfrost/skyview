@@ -1,6 +1,7 @@
 const assert = require('assert')
 const nock = require('nock')
 const md5File = require('md5-file')
+const fs = require('fs')
 const dscovr = require('./dscovr.js')
 const dscovrMocks = require('../mocks/dscovr.mock.js')
 
@@ -28,6 +29,7 @@ describe('dscovr', function() {
                     const expectedImageHash = md5File.sync(mockedImageFilePath)
                     const actualImageHash = md5File.sync(expectedPath)
                     assert.equal(expectedImageHash, actualImageHash)
+                    fs.unlinkSync(expectedPath)
                 })
         })
     })
