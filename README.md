@@ -1,11 +1,16 @@
 # skyview
 We would like to build command line interfaces and node packages for downloading 
-satellite imagery. We will start with the [EPIC DSCOVR API](https://epic.gsfc.nasa.gov/about/api) and eventually add a
+satellite imagery. We will start with the
+[EPIC DSCOVR API](https://epic.gsfc.nasa.gov/about/api) and eventually add a
 GOES-16 interface when its API becomes available.
 
 ### Current implementation:
 
-Run `node js/skyview.js` with optional flags to download images from DSCOVR satellite. Default will download the latest natural image to your current working directory. Options:
+First run `npm install`.
+
+Run `node js/skyview.js` with optional flags to download images from DSCOVR
+satellite. Default will download the latest natural image to your current
+working directory. Options:
 
 * color (natural || enhanced)
 * format (png || jpg || thumbs)
@@ -32,8 +37,8 @@ __Node Example:__
 
 __[Node v6.9.1](https://nodejs.org/en/download/)__
 
-This command line app is being developed with 6.9.1 but we think it could be built with earlier
-versions. Let us know!
+Node v6 and higher is required to run skyview because we use ES6 language
+features.
 
 ### Tests
 
