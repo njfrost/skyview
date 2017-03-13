@@ -6,36 +6,46 @@ const fs = require('fs')
 const baseApi = 'https://epic.gsfc.nasa.gov/api'
 const baseArchive = 'https://epic.gsfc.nasa.gov/archive'
 
-function getJson() {
-    return fetch(`${baseApi}/natural`).then(function(res) {
+function getJson({ requestColor }) {
+    const color = requestColor || 'natural'
+    return fetch(`${baseApi}/${color}`).then(function(res) {
         return res.json()
     })
 }
 
-function getImageUrl(formattedDate, name, requestColor, requestFormat) {
-    const color = requestColor || 'natural'
+function getExtension(requestFormat) {
     const format = requestFormat || 'png'
-    return `${baseArchive}/${color}/${formattedDate}/${format}/${name}.${format}`
+    const extension = format === 'thumbs' ? 'jpg' : format
+    return { format, extension }
 }
 
-function getImage() {
-    return getJson().then(function(json) {
-        var date = json[0].date
-        var image = json[0].image
+function getImageUrl(formattedDate, name, requestColor, requestFormat) {
+    const color = requestColor || 'natural'
+    const { format, extension } = getExtension(requestFormat)
+    return `${baseArchive}/${color}/${formattedDate}/${format}/${name}.${extension}`
+}
+
+function getImage({ requestColor, requestFormat, requestFileName }) {
+    return getJson({ requestColor }).then(function(json) {
+        const date = json[0].date
+        const image = json[0].image
         const formattedDate = date.slice(0,10).replace(new RegExp('-', 'g'), '/')
-        const imageUrl = getImageUrl(formattedDate, image)
-        console.log(`downloading ${imageUrl}`)
+        const imageUrl = getImageUrl(formattedDate, image, requestColor, requestFormat)
         return fetch(imageUrl)
             .then(function(res) {
-                const filePath = `${process.cwd()}/${image}.png`
+                const { extension } = getExtension(requestFormat)
+                const fileName = requestFileName || `${image}.${extension}`
+                const filePath = `${process.cwd()}/${fileName}`
                 console.log(chalk.blue(figlet.textSync('Earth!', { horizontalLayout: 'full' })))
-                console.log(chalk.green(`Downloading ${imageUrl} ....`))
-                const writestream = fs.createWriteStream(filePath)
-                console.log(chalk.green(`Saved file to ${filePath}`))
-
-                const stream = res.body.pipe(writestream)
+                console.log(`Latest ${requestColor || 'natural'} image at ${date}`)
+                console.log(`Downloading ${chalk.green(imageUrl)}...`)
+                const stream = res.body.pipe(fs.createWriteStream(filePath))
                 return new Promise(function (resolve, reject) {
-                    stream.on('close', resolve)
+                    function finishDownload() {
+                        console.log(`Saved file to ${chalk.green(filePath)}`)
+                        resolve()
+                    }
+                    stream.on('close', finishDownload)
                     stream.on('error', reject)
                 })
             })

@@ -3,17 +3,29 @@ We would like to build command line interfaces and node packages for downloading
 satellite imagery. We will start with the [EPIC DSCOVR API](https://epic.gsfc.nasa.gov/about/api) and eventually add a
 GOES-16 interface when it's API becomes available.
 
-__Comand line Example:__
+Current implementation:
 
-    $ dscovr --format=png --color=natural --latest
+Run `node js/skyview.js` with optional flags to download images from DSCOVR satellite. Default will download the latest natural image to your current working directory. Options:
+
+* color (natural || enhanced)
+* format (png || jpg || thumbs)
+* filename (ex: earthispretty.png)
+
+Example: `node js/skyview.js --format thumbs`
+
+Future implementation:
+
+__Command line Example:__
+
+    $ dscovr --format png --color natural --filename earthispretty.png
     Latest natural image epic_1b_20170308002713_02.png at 2017-03-08 00:22:24
-    --2017-03-11 18:24:55-- downloading  https://epic.gsfc.nasa.gov/archive/natural/2017/03/08/png/epic_1b_20170308002713_02.png
-    Saving to 'epic_1b_20170308002713_02.png'
+    Downloading https://epic.gsfc.nasa.gov/archive/natural/2017/03/08/png/epic_1b_20170308002713_02.png...
+    Saved file to skyview/epic_1b_20170308002713_02.png
     
 __Node Example:__
 
-    var dscovr = require('dscovr')
-    dscovr.getImage( { format: 'png', color: 'natural', date: '2017-03-11Z18:24:55' } )
+    const dscovr = require('dscovr')
+    dscovr.getImage({ format: 'png', color: 'natural', date: '2017-03-11Z18:24:55' })
     
     
 # Install
