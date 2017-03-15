@@ -6,11 +6,15 @@ const fs = require('fs')
 const baseApi = 'https://epic.gsfc.nasa.gov/api'
 const baseArchive = 'https://epic.gsfc.nasa.gov/archive'
 
-function getJson({ requestColor }) {
-    const color = requestColor || 'natural'
-    return fetch(`${baseApi}/${color}`).then(function(res) {
-        return res.json()
-    })
+function getJsonFromApi(color) {
+    return fetch(`${baseApi}/${color}`).then(res => res.json())
+}
+
+function getImageUrl(json, color, requestFormat) {
+    const name = json[0].image
+    const { format, extension } = getExtension(requestFormat)
+    const formattedDate = json[0].date.slice(0,10).replace(new RegExp('-', 'g'), '/')
+    return `${baseArchive}/${color}/${formattedDate}/${format}/${name}.${extension}`
 }
 
 function getExtension(requestFormat) {
@@ -19,28 +23,25 @@ function getExtension(requestFormat) {
     return { format, extension }
 }
 
-function getImageUrl(formattedDate, name, requestColor, requestFormat) {
-    const color = requestColor || 'natural'
-    const { format, extension } = getExtension(requestFormat)
-    return `${baseArchive}/${color}/${formattedDate}/${format}/${name}.${extension}`
-}
-
-function getImage({ requestColor, requestFormat, requestFileName }) {
-    return getJson({ requestColor }).then(function(json) {
-        const date = json[0].date
-        const image = json[0].image
-        const formattedDate = date.slice(0,10).replace(new RegExp('-', 'g'), '/')
-        const imageUrl = getImageUrl(formattedDate, image, requestColor, requestFormat)
+/* expected args (all optional, defaults listed first):
+    * color - natural || enhanced
+    * format - png || jpg || thumbs
+    * filename - imagename.ext (example, 'earth.png')
+*/
+function getImage(args) {
+    const color = args.color || 'natural'
+    return getJsonFromApi(color).then(json => {
+        const imageUrl = getImageUrl(json, color, args.format)
         return fetch(imageUrl)
-            .then(function(res) {
-                const { extension } = getExtension(requestFormat)
-                const fileName = requestFileName || `${image}.${extension}`
+            .then(res => {
+                const { extension } = getExtension(args.format)
+                const fileName = args.filename || `${json[0].image}.${extension}`
                 const filePath = `${process.cwd()}/${fileName}`
                 console.log(chalk.blue(figlet.textSync('Earth!', { horizontalLayout: 'full' })))
-                console.log(`Latest ${requestColor || 'natural'} image at ${date}`)
+                console.log(`Latest ${args.color || 'natural'} image at ${json[0].date}`)
                 console.log(`Downloading ${chalk.green(imageUrl)}...`)
                 const stream = res.body.pipe(fs.createWriteStream(filePath))
-                return new Promise(function (resolve, reject) {
+                return new Promise((resolve, reject) => {
                     function finishDownload() {
                         console.log(`Saved file to ${chalk.green(filePath)}`)
                         resolve()
@@ -53,7 +54,7 @@ function getImage({ requestColor, requestFormat, requestFileName }) {
 }
 
 module.exports = {
-    getJson,
+    getJsonFromApi,
     getImage,
     baseApi,
     baseArchive,

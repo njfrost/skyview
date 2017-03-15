@@ -1,4 +1,5 @@
 const dscovr = require('./dscovr/dscovr.js')
-const argv = require('minimist')(process.argv.slice(2))
+const args = require('minimist')(process.argv.slice(2))
 
-dscovr.getImage({ requestColor: argv.color, requestFormat: argv.format, requestFileName: argv.filename })
+// expected args: color, format, filename (all optional)
+dscovr.getImage(args)

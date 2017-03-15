@@ -6,10 +6,10 @@ const dscovr = require('./dscovr.js')
 const dscovrMocks = require('../../mocks/dscovr.mock.js')
 
 describe('dscovr', function() {
-    describe('getJson', function() {
+    describe('getJsonFromApi', function() {
         nock(dscovr.baseApi).get('/natural').reply(200, dscovrMocks.natural)
         it('calls base api for natural satellite images', function() {
-            return dscovr.getJson({})
+            return dscovr.getJsonFromApi('natural')
                 .then(function(json) {
                     assert.deepEqual(json, dscovrMocks.natural)
                 })
@@ -23,7 +23,7 @@ describe('dscovr', function() {
                 .replyWithFile(200, mockedImageFilePath, {
                     'Content-Type': 'image/png'
                 })
-            return dscovr.getImage({})
+            return dscovr.getImage([])
                 .then(function() {
                     const expectedPath = `${process.cwd()}/epic_1b_20170308002713_02.png`
                     const expectedImageHash = md5File.sync(mockedImageFilePath)
