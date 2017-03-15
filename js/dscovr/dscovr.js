@@ -39,6 +39,10 @@ function getImage(args) {
                 const filePath = `${process.cwd()}/${fileName}`
                 console.log(chalk.blue(figlet.textSync('Earth!', { horizontalLayout: 'full' })))
                 console.log(`Latest ${args.color || 'natural'} image at ${json[0].date}`)
+                if (fs.existsSync(filePath)) {
+                    return console.log(`Filename match. It looks like you have already downloaded this one! \n` +
+                    `Try again in a couple of hours.`)
+                }
                 console.log(`Downloading ${chalk.green(imageUrl)}...`)
                 const stream = res.body.pipe(fs.createWriteStream(filePath))
                 return new Promise((resolve, reject) => {
