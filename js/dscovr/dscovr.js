@@ -10,17 +10,17 @@ function getJsonFromApi(color) {
     return fetch(`${baseApi}/${color}`).then(res => res.json())
 }
 
-function getImageUrl(json, color, requestFormat) {
-    const name = json[0].image
-    const { format, extension } = getExtension(requestFormat)
-    const formattedDate = json[0].date.slice(0,10).replace(new RegExp('-', 'g'), '/')
-    return `${baseArchive}/${color}/${formattedDate}/${format}/${name}.${extension}`
-}
-
 function getExtension(requestFormat) {
     const format = requestFormat || 'png'
     const extension = format === 'thumbs' ? 'jpg' : format
     return { format, extension }
+}
+
+function getImageUrl(json, color, requestFormat) {
+    const name = json[0].image
+    const { format, extension } = getExtension(requestFormat)
+    const formattedDate = json[0].date.slice(0, 10).replace(new RegExp('-', 'g'), '/')
+    return `${baseArchive}/${color}/${formattedDate}/${format}/${name}.${extension}`
 }
 
 /* expected args (all optional, defaults listed first):
@@ -40,8 +40,8 @@ function getImage(args) {
                 console.log(chalk.blue(figlet.textSync('Earth!', { horizontalLayout: 'full' })))
                 console.log(`Latest ${args.color || 'natural'} image at ${json[0].date}`)
                 if (fs.existsSync(filePath)) {
-                    return console.log(`Filename match. It looks like you have already downloaded this one! \n` +
-                    `Try again in a couple of hours.`)
+                    return console.log('Filename match. It looks like you have already downloaded this one! \n' +
+                      'Try again in a couple of hours.')
                 }
                 console.log(`Downloading ${chalk.green(imageUrl)}...`)
                 const stream = res.body.pipe(fs.createWriteStream(filePath))

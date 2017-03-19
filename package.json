@@ -22,6 +22,11 @@
   },
   "homepage": "https://github.com/njfrost/skyview#readme",
   "devDependencies": {
+    "eslint": "^3.18.0",
+    "eslint-config-airbnb": "^14.1.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^4.0.0",
+    "eslint-plugin-react": "^6.10.1",
     "md5-file": "^3.1.1",
     "mocha": "^3.2.0",
     "nock": "^9.0.9"
@@ -30,6 +35,7 @@
     "chalk": "^1.1.3",
     "figlet": "^1.2.0",
     "md5-file": "^3.1.1",
+    "minimist": "^1.2.0",
     "node-fetch": "^1.6.3"
   }
 }
