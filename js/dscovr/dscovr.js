@@ -16,10 +16,10 @@ function getExtension(requestFormat) {
     return { format, extension }
 }
 
-function constructImageUrl(json, color, requestFormat) {
-    const name = json[0].image
+function constructImageUrl(imageMeta, color, requestFormat) {
+    const name = imageMeta.image
     const { format, extension } = getExtension(requestFormat)
-    const formattedDate = json[0].date.slice(0, 10).replace(new RegExp('-', 'g'), '/')
+    const formattedDate = imageMeta.date.slice(0, 10).replace(new RegExp('-', 'g'), '/')
     return `${baseArchive}/${color}/${formattedDate}/${format}/${name}.${extension}`
 }
 
@@ -31,14 +31,15 @@ function constructImageUrl(json, color, requestFormat) {
 function getImage(args) {
     const color = args.color || 'natural'
     return getJson(color).then(json => {
-        const imageUrl = constructImageUrl(json, color, args.format)
+        const latestImageMeta = json[0]
+        const imageUrl = constructImageUrl(latestImageMeta, color, args.format)
         return fetch(imageUrl)
             .then(res => {
                 const { extension } = getExtension(args.format)
-                const fileName = args.filename || `${json[0].image}.${extension}`
+                const fileName = args.filename || `${latestImageMeta.image}.${extension}`
                 const filePath = `${process.cwd()}/${fileName}`
                 console.log(chalk.blue(figlet.textSync('Earth!', { horizontalLayout: 'full' })))
-                console.log(`Latest ${color} image at ${json[0].date}`)
+                console.log(`Latest ${color} image at ${latestImageMeta.date}`)
                 if (fs.existsSync(filePath)) {
                     return console.log('Filename match. It looks like you have already downloaded this one! \n' +
                       'Try again in a couple of hours.')
