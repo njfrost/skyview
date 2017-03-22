@@ -31,4 +31,22 @@ describe('dscovr', () => {
             })
         })
     })
+    describe('constructImageUrl', () => {
+        it('constructs an appropriate url from data', () => {
+            const metaImageData = { image: 'whackyImageName', date: '2017-03-08 02:10:27' }
+            const color = 'natural'
+            const format = 'png'
+            const actualUrl = dscovr.constructImageUrl(metaImageData, color, format)
+            const expectedUrl = 'https://epic.gsfc.nasa.gov/archive/natural/2017/03/08/png/whackyImageName.png'
+            assert.equal(expectedUrl, actualUrl)
+        })
+        it('constructs a jpg url when format is thumbs', () => {
+            const metaImageData = { image: 'whackyImageName', date: '2017-03-08 02:10:27' }
+            const color = 'natural'
+            const format = 'thumbs'
+            const actualUrl = dscovr.constructImageUrl(metaImageData, color, format)
+            const expectedUrl = 'https://epic.gsfc.nasa.gov/archive/natural/2017/03/08/thumbs/whackyImageName.jpg'
+            assert.equal(expectedUrl, actualUrl)
+        })
+    })
 })

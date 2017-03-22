@@ -59,6 +59,7 @@ function getImage(args) {
 }
 
 module.exports = {
+    constructImageUrl,
     getJson,
     getImage,
     baseApi,
